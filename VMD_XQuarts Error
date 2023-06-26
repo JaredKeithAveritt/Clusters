@@ -1,0 +1,15 @@
+Error: XRequest.149: GLXBadContext 0x1000105 XRequest.149: GLXBadContext 0x0 XRequest.149: BadMatch (invalid parameter attributes) 0x1000105
+Solution taken from : https://www.ks.uiuc.edu/Research/vmd/mailing_list/vmd-l/28494.html
+Hi all,
+Imay have a solution to this Xquartz and VMD issue. It is indeed an issue
+with XQuartz. I believe it has something to do with allowing XQuartz to
+allow indirect GLX contexts. (What that specifically means I don't know. My
+expertise here is lacking but that's what I can find being discussed
+online.) But the following fixes my implementation.
+The fix is this: Quit XQuartz, then in the macOS Terminal application (on
+your own machine, *not* logged into the reomte cluster) run:
+
+    defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
+
+Reload your terminal and you should then be able to log into a remote
+cluster and launch run remote XQuartz sessions for VMD
